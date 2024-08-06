@@ -1,8 +1,8 @@
 
 export function SearchStore() {
   return (
-    <div>
-        
+    <div className="search-store-container">
+
     </div>
   )
 }
