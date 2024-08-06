@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^5.16.6",
     "@turf/turf": "^7.0.0",
     "axios": "^1.6.2",
     "ol": "^10.0.0",
