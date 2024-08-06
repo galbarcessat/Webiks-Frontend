@@ -1,7 +1,6 @@
 import { StorePreview } from "./StorePreview";
 
 export function StoreList({ stores }) {
-    console.log('stores:', stores)
     return (
             <div className="store-list-container">
             <h2 className="all-stores-title">ALL STORES : </h2>
