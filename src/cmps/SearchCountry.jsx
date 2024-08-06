@@ -1,5 +1,6 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import { StoreList } from './StoreList';
 
 export function SearchCountry({ countries, setSelectedCountry, selectedCountry, locationsToDisplay }) {
 
@@ -8,7 +9,7 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
         console.log('selectedCountryObject:', selectedCountryObject)
         setSelectedCountry(selectedCountryObject)
     }
-
+    console.log('locationsToDisplay:', locationsToDisplay)
     return (
         <div className="search-store-container">
 
@@ -26,6 +27,13 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
                 <h1>Country : <span>{selectedCountry ? selectedCountry.name : "Everywhere"}</span></h1>
                 <h2>Stores : <span>{locationsToDisplay.length}</span></h2>
             </div>
+
+            {(locationsToDisplay.length > 0 && selectedCountry) &&
+                <StoreList
+                    stores={locationsToDisplay}
+                />
+            }
+
         </div>
     )
 }

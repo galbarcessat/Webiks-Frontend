@@ -47,11 +47,8 @@ export function HomePage() {
             const boundaries = {
                 type: countryDetails.geometry.type,
                 coordinates: countryDetails.geometry.coordinates
-                // type: "Polygon",
-                // coordinates: countryDetails.geometry.coordinates[countryDetails.geometry.coordinates.length-1]
             }
 
-            console.log('boundaries:', boundaries)
             setCountryBoundaries(boundaries)
             // filterLocationsByName()
             filterLocationsWithinBoundaries(locations, boundaries)
@@ -62,8 +59,8 @@ export function HomePage() {
     }
 
     function filterLocationsWithinBoundaries(locations, boundaries) {
-        if (!locations || !boundaries || !boundaries.type || !boundaries.coordinates) return
-
+        if (!locations || locations.length === 0 || !boundaries || !boundaries.type || !boundaries.coordinates) return
+        
         const filteredLocations = locations.filter(location => {
             const locationPoint = point([location.longitude, location.latitude])
             return booleanPointInPolygon(locationPoint, boundaries)
