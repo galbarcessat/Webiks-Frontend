@@ -23,8 +23,8 @@ export function SearchStore({ countries, setSelectedCountry, selectedCountry, lo
             />
 
             <div className='country-details'>
-                <h1>Country : <span>{selectedCountry ? selectedCountry.name : "None"}</span></h1>
-                <h2>Stores :<span>{locationsToDisplay.length}</span></h2>
+                <h1>Country : <span>{selectedCountry ? selectedCountry.name : "Everywhere"}</span></h1>
+                <h2>Stores : <span>{locationsToDisplay.length}</span></h2>
             </div>
         </div>
     )

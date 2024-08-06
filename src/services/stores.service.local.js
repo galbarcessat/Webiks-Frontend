@@ -1,6 +1,6 @@
 import { storageService } from './async-storage.service.js'
 import { httpService } from './http.service.js'
-import { countryCodeToName } from "../assets/countryNames.js"
+import { countryCodeToName } from "../assets/data/countryNames.js"
 
 const STORAGE_KEY = 'storeDB'
 const BASE_URL = 'store'
@@ -40,7 +40,7 @@ async function remove(storeId) {
 
 function getAllCountries(locations) {
     const countriesCode = Array.from(new Set(locations.map(location => location.country)))
-    
+
     const countryObjects = countriesCode.map(code => {
         const name = getCountryName(code) || code
         return {

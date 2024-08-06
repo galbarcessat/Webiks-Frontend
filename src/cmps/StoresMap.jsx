@@ -13,7 +13,7 @@ import 'ol/ol.css';
 
 export function StoresMap({ locationsToDisplay, selectedCountry }) {
   const [map, setMap] = useState(null)
-  const [vectorSource] = useState(new VectorSource())
+  const [vectorSource, setVectorSource] = useState(new VectorSource())
   const mapElement = useRef(null)
 
   useEffect(() => {
