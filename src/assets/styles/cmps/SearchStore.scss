@@ -1,6 +1,13 @@
 .search-store-container {
-    width: 15vw;
+    width: 20%;
+    min-width: 200px;
     height: 100%;
-    background-color: blue;
-    border-right: 2px solid black;
+    background-color: white;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
 }

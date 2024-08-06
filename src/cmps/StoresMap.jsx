@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Map from 'ol/Map';
 import View from 'ol/View';
+import GeoJSON from 'ol/format/GeoJSON';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { OSM } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
@@ -10,12 +11,13 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import 'ol/ol.css';
 
-export function StoresMap({ locations }) {
+export function StoresMap({ locationsToDisplay, selectedCountry }) {
   const [map, setMap] = useState(null)
   const [vectorSource] = useState(new VectorSource())
   const mapElement = useRef(null)
 
   useEffect(() => {
+    console.log('locationsToDisplay:', locationsToDisplay)
     if (!map) {
       const initialMap = new Map({
         target: mapElement.current,
@@ -42,14 +44,40 @@ export function StoresMap({ locations }) {
     } else {
       updateMapLocations()
     }
-  }, [map, locations])
+  }, [map, locationsToDisplay])
+
+
+  // useEffect(() => {
+  //   if (map && selectedCountry) {
+  //     // Fetch country boundaries and filter Starbucks locations
+  //     fetch(`API_URL_FOR_COUNTRY_BOUNDARIES/${selectedCountry}`)
+  //       .then(response => response.json())
+  //       .then(boundaries => {
+  //         const vectorSource = new VectorSource({
+  //           features: new GeoJSON().readFeatures(boundaries),
+  //         });
+  //         map.addLayer(new VectorLayer({ source: vectorSource }));
+
+  //         // Filter Starbucks locations based on boundaries
+  //         const filteredLocations = starbucksLocations.filter(location =>
+  //           turf.inside(
+  //             [location.longitude, location.latitude],
+  //             boundaries
+  //           )
+  //         );
+  //         // Update map with filtered locations
+  //       });
+  //   }
+  // }, [map, selectedCountry, starbucksLocations]);
+
+
 
   function updateMapLocations() {
     // Clear existing locations
     vectorSource.clear()
 
     // Add new features/locations
-    locations.forEach((store) => {
+    locationsToDisplay.forEach((store) => {
       const feature = new Feature({
         geometry: new Point(fromLonLat([store.longitude, store.latitude])),
         name: store.name,
@@ -57,11 +85,15 @@ export function StoresMap({ locations }) {
       vectorSource.addFeature(feature)
     });
 
-    // Center map based on the first location if available - if i choose a country it will zoom to its locations
-    if (locations.length > 0) {
-      const firstLocation = locations[0]
+    if (!selectedCountry) {
+      map.getView().setCenter(fromLonLat([0, 0]))
+      map.getView().setZoom(2.5)
+    }
+    else if (locationsToDisplay.length > 0) {
+      // Center map based on the first location if available - if i choose a country it will zoom to its locations
+      const firstLocation = locationsToDisplay[0]
       map.getView().setCenter(fromLonLat([firstLocation.longitude, firstLocation.latitude]))
-      map.getView().setZoom(10)
+      map.getView().setZoom(9)
     }
   }
 

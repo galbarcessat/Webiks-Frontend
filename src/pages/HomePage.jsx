@@ -8,11 +8,24 @@ export function HomePage() {
     const [locations, setLocations] = useState([])
     const [countries, setCountries] = useState([])
     const [selectedCountry, setSelectedCountry] = useState(null)
-    const [filteredLocations, setFilteredLocations] = useState([])
+    const [locationsToDisplay, setLocationsToDisplay] = useState([])
 
     useEffect(() => {
         fetchStarbucksLocations()
     }, [])
+
+    useEffect(() => {
+        if (!selectedCountry) {
+            setLocationsToDisplay(locations)
+            return
+        }
+        filterLocations()
+    }, [selectedCountry])
+
+    function filterLocations() {
+        const filteredLocations = locations.filter(location => location.country === selectedCountry.code)
+        setLocationsToDisplay(filteredLocations)
+    }
 
     async function fetchStarbucksLocations() {
         try {
@@ -20,12 +33,12 @@ export function HomePage() {
             const { data } = await axios.get('https://raw.githubusercontent.com/mmcloughlin/starbucks/master/locations.json')
             console.log('locations:', data)
             setLocations(data)
+            setLocationsToDisplay(data)
             getAllCountryNames(data)
             return data
         } catch (error) {
             console.log('error:', error)
             throw new Error(error)
-            return
         }
     }
 
@@ -37,8 +50,15 @@ export function HomePage() {
 
     return (
         <div className="home-page-container">
-            <StoresMap locations={locations} />
-            <SearchStore />
+            <StoresMap
+             locationsToDisplay={locationsToDisplay} 
+             selectedCountry={selectedCountry}
+             />
+            <SearchStore
+                countries={countries}
+                setSelectedCountry={setSelectedCountry}
+                selectedCountry={selectedCountry}
+                locationsToDisplay={locationsToDisplay} />
         </div>
     )
 }
