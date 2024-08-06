@@ -98,7 +98,7 @@ export function StoresMap({ locationsToDisplay, selectedCountry }) {
   }
 
   return (
-    <div ref={mapElement} style={{ width: '85vw', height: '100vh' }}>
+    <div className='map-container' ref={mapElement} style={{ width: '85vw', height: '100%' }}>
 
     </div>
   )
