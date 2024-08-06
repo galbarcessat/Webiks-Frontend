@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-export function SearchStore({ countries, setSelectedCountry, selectedCountry, locationsToDisplay }) {
+export function SearchCountry({ countries, setSelectedCountry, selectedCountry, locationsToDisplay }) {
 
     function handleCountryChange(event, countryName) {
         const selectedCountryObject = countries.find(country => country.name === countryName)

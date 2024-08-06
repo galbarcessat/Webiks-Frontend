@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { StoresMap } from "../cmps/StoresMap";
-import { SearchStore } from "../cmps/SearchStore";
+import { SearchCountry } from "../cmps/SearchCountry";
 import { storeService } from '../services/stores.service.local';
 import { booleanPointInPolygon, point } from '@turf/turf';
 
@@ -47,8 +47,10 @@ export function HomePage() {
             const boundaries = {
                 type: countryDetails.geometry.type,
                 coordinates: countryDetails.geometry.coordinates
+                // type: "Polygon",
+                // coordinates: countryDetails.geometry.coordinates[countryDetails.geometry.coordinates.length-1]
             }
-         
+
             console.log('boundaries:', boundaries)
             setCountryBoundaries(boundaries)
             // filterLocationsByName()
@@ -60,7 +62,7 @@ export function HomePage() {
     }
 
     function filterLocationsWithinBoundaries(locations, boundaries) {
-        if (!boundaries || !boundaries.type || !boundaries.coordinates) return
+        if (!locations || !boundaries || !boundaries.type || !boundaries.coordinates) return
 
         const filteredLocations = locations.filter(location => {
             const locationPoint = point([location.longitude, location.latitude])
@@ -89,7 +91,7 @@ export function HomePage() {
                 selectedCountry={selectedCountry}
                 countryBoundaries={countryBoundaries}
             />
-            <SearchStore
+            <SearchCountry
                 countries={countries}
                 setSelectedCountry={setSelectedCountry}
                 selectedCountry={selectedCountry}
