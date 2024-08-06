@@ -41,13 +41,11 @@ async function remove(storeId) {
 function getAllCountries(locations) {
     const countriesCode = Array.from(new Set(locations.map(location => location.country)))
 
-    const countryObjects = countriesCode.map(code => {
-        const name = getCountryName(code) || code
-        return {
-            name,
-            code
-        }
-    })
+    const countryObjects = countriesCode.map(code => ({
+        name: getCountryName(code),
+        code: code
+    }))
+
     return countryObjects
 }
 

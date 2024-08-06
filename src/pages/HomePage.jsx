@@ -3,15 +3,19 @@ import axios from 'axios';
 import { StoresMap } from "../cmps/StoresMap";
 import { SearchStore } from "../cmps/SearchStore";
 import { storeService } from '../services/stores.service.local';
+import { booleanPointInPolygon, point } from '@turf/turf';
+
+//handle Errors with Alert from MUI
 
 export function HomePage() {
     const [locations, setLocations] = useState([])
     const [countries, setCountries] = useState([])
     const [selectedCountry, setSelectedCountry] = useState(null)
+    const [countryBoundaries, setCountryBoundaries] = useState([])
     const [locationsToDisplay, setLocationsToDisplay] = useState([])
 
     useEffect(() => {
-        fetchStarbucksLocations()
+        getAllStoresLocations()
     }, [])
 
     useEffect(() => {
@@ -19,19 +23,12 @@ export function HomePage() {
             setLocationsToDisplay(locations)
             return
         }
-        filterLocations()
+        fetchCountryBoundaries(selectedCountry.code)
     }, [selectedCountry])
 
-    function filterLocations() {
-        const filteredLocations = locations.filter(location => location.country === selectedCountry.code)
-        setLocationsToDisplay(filteredLocations)
-    }
-
-    async function fetchStarbucksLocations() {
+    async function getAllStoresLocations() {
         try {
-            //later move to backend
             const { data } = await axios.get('https://raw.githubusercontent.com/mmcloughlin/starbucks/master/locations.json')
-            console.log('locations:', data)
             setLocations(data)
             setLocationsToDisplay(data)
             getAllCountryNames(data)
@@ -42,23 +39,62 @@ export function HomePage() {
         }
     }
 
+    async function fetchCountryBoundaries(countryCode) {
+        try {
+            const { data } = await axios.get('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+            const countryDetails = data?.features.find(country => country.properties.ISO_A2 === countryCode)
+
+            const boundaries = {
+                type: countryDetails.geometry.type,
+                coordinates: countryDetails.geometry.coordinates
+            }
+         
+            console.log('boundaries:', boundaries)
+            setCountryBoundaries(boundaries)
+            // filterLocationsByName()
+            filterLocationsWithinBoundaries(locations, boundaries)
+
+        } catch (error) {
+            console.error('Error fetching or processing country boundaries:', error);
+        }
+    }
+
+    function filterLocationsWithinBoundaries(locations, boundaries) {
+        if (!boundaries || !boundaries.type || !boundaries.coordinates) return
+
+        const filteredLocations = locations.filter(location => {
+            const locationPoint = point([location.longitude, location.latitude])
+            return booleanPointInPolygon(locationPoint, boundaries)
+        })
+
+        console.log('filteredLocations:', filteredLocations)
+        setLocationsToDisplay(filteredLocations)
+    }
+
     function getAllCountryNames(locations) {
         const countries = storeService.getAllCountries(locations)
-        console.log('countries:', countries)
         setCountries(countries)
+    }
+
+    function filterLocationsByName() {
+        const filteredLocations = locations.filter(location => location.country === selectedCountry.code)
+        console.log('filteredLocations:', filteredLocations)
+        setLocationsToDisplay(filteredLocations)
     }
 
     return (
         <div className="home-page-container">
             <StoresMap
-             locationsToDisplay={locationsToDisplay} 
-             selectedCountry={selectedCountry}
-             />
+                locationsToDisplay={locationsToDisplay}
+                selectedCountry={selectedCountry}
+                countryBoundaries={countryBoundaries}
+            />
             <SearchStore
                 countries={countries}
                 setSelectedCountry={setSelectedCountry}
                 selectedCountry={selectedCountry}
-                locationsToDisplay={locationsToDisplay} />
+                locationsToDisplay={locationsToDisplay}
+            />
         </div>
     )
 }
