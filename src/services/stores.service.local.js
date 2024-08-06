@@ -1,8 +1,6 @@
 import { storageService } from './async-storage.service.js'
 import { httpService } from './http.service.js'
-import { SOCKET_EVENT_UPDATE_BOARD, socketService } from './socket.service.js'
-import { userService } from './user.service.js'
-import { utilService } from './util.service.js'
+import {countryCodeToName} from "../assets/countryNames.js"
 
 const STORAGE_KEY = 'storeDB'
 const BASE_URL = 'store'
@@ -12,7 +10,7 @@ export const storeService = {
     getStoreById,
     save,
     remove,
-   
+    getAllCountries
 }
 
 
@@ -38,4 +36,14 @@ async function save(store) {
 async function remove(storeId) {
     return httpService.delete(`${BASE_URL}/${storeId}`, storeId)
     // return await storageService.remove(STORAGE_KEY, boardId)
+}
+
+function getAllCountries(locations) {
+    const countriesCode = Array.from(new Set(locations.map(location => location.country)))
+    const countryNames = countriesCode.map(code => getCountryName(code))
+    return countryNames
+}
+
+function getCountryName(countryCode) {
+    return countryCodeToName[countryCode] || countryCode
 }

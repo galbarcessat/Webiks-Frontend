@@ -1,11 +1,11 @@
-import { Map } from "../cmps/Map";
+import { StoresMap } from "../cmps/StoresMap";
 import { SearchStore } from "../cmps/SearchStore";
 
 export function HomePage() {
 
     return (
         <div className="home-page-container">
-            <Map />
+            <StoresMap />
             <SearchStore />
         </div>
     )
