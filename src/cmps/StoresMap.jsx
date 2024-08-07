@@ -14,7 +14,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 export function StoresMap({ locationsToDisplay, selectedCountry, countryBoundaries }) {
   const [map, setMap] = useState(null)
   const [vectorSource, setVectorSource] = useState(new VectorSource())
-  const [boundarySource, setBoundarySource] = useState(new VectorSource());
+  const [boundarySource, setBoundarySource] = useState(new VectorSource())
   const mapElement = useRef(null)
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export function StoresMap({ locationsToDisplay, selectedCountry, countryBoundari
       setMap(initialMap)
     } else {
       updateMapLocations()
-      if (selectedCountry) {
+      if (selectedCountry && locationsToDisplay.length > 0) {
         updateCountryBoundary()
       } else {
         boundarySource.clear() // Clear boundaries if no country is selected
@@ -79,34 +79,33 @@ export function StoresMap({ locationsToDisplay, selectedCountry, countryBoundari
       map.getView().setCenter(fromLonLat([0, 0]))
       map.getView().setZoom(2.5)
     }
-    else if (locationsToDisplay.length > 0) {
-      // if i choose a country it will zoom to its locations - will go to the first one on the list
-      const firstLocation = locationsToDisplay[0]
-      map.getView().setCenter(fromLonLat([firstLocation.longitude, firstLocation.latitude]))
-      map.getView().setZoom(9)
-    }
+    // else if (locationsToDisplay.length > 0) {
+    //   // if i choose a country it will zoom to its locations - will go to the first one on the list
+    //   const firstLocation = locationsToDisplay[0]
+    //   map.getView().setCenter(fromLonLat([firstLocation.longitude, firstLocation.latitude]))
+    //   map.getView().setZoom(9)
+    // }
   }
 
   function updateCountryBoundary() {
-    // Clear existing boundaries
-    boundarySource.clear();
+    //Clear existing boundaries/borders
+    boundarySource.clear()
 
     if (selectedCountry && countryBoundaries) {
       const format = new GeoJSON()
       const features = format.readFeatures(countryBoundaries, {
         featureProjection: 'EPSG:3857',
-      });
+      })
 
-      boundarySource.addFeatures(features);
+      boundarySource.addFeatures(features)
 
       // Adjust the view to fit the country boundary
       if (features.length > 0) {
-        const extent = features[0].getGeometry().getExtent();
-        map.getView().fit(extent, { padding: [50, 50, 50, 50] });
+        const extent = features[0].getGeometry().getExtent()
+        map.getView().fit(extent, { padding: [50, 50, 50, 50] })
       }
     }
   }
-
 
   return (
     <div className='map-container' ref={mapElement} style={{ width: '85vw', height: '100%' }}>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { booleanPointInPolygon, point } from '@turf/turf';
 import { StoresMap } from "../cmps/StoresMap";
 import { SearchCountry } from "../cmps/SearchCountry";
 import { storeService } from '../services/stores.service.local';
-import { booleanPointInPolygon, point } from '@turf/turf';
 import { AlertMsg } from '../cmps/AlertMsg';
 
 export function HomePage() {

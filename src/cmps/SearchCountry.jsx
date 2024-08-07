@@ -6,13 +6,11 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
 
     function handleCountryChange(event, countryName) {
         const selectedCountryObject = countries.find(country => country.name === countryName)
-        console.log('selectedCountryObject:', selectedCountryObject)
         setSelectedCountry(selectedCountryObject)
     }
-    console.log('locationsToDisplay:', locationsToDisplay)
+
     return (
         <div className="search-store-container">
-
             <Autocomplete
                 disablePortal
                 id="combo-box-demo"

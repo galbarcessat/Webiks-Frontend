@@ -52,3 +52,4 @@ function getAllCountries(locations) {
 function getCountryName(countryCode) {
     return countryCodeToName[countryCode] || countryCode
 }
+
