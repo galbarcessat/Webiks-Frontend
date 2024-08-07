@@ -28,16 +28,16 @@ export function HomePage() {
 
     async function getAllStoresLocations() {
         try {
-            const { data } = await axios.get('http://localhost:3030/stores')
-            setStores(data)
-            setStoresToDisplay(data)
-            getAllCountryNames(data)
+            const allStores = await storeService.getStores()
+            setStores(allStores)
+            setStoresToDisplay(allStores)
+            getAllCountryNames(allStores)
             openAlert({ severity: "success", text: "Fetched Starbucks store locations successfully" })
 
-            return data
+            return allStores
         } catch (error) {
             openAlert({ severity: "error", text: "Failed to fetch Starbucks store locations" })
-            throw new Error(error)
+            return
         }
     }
 
@@ -46,14 +46,10 @@ export function HomePage() {
         setCountries(countries)
     }
 
-    //FILTER THE STORES IN THE BACKEND
+    //FILTER THE STORES IN THE BACKEND AND GET COUNTRY BOUNDARIES
     async function getCountryStoresAndBoundaries(countryCode) {
         try {
-            const response = await axios.post('http://localhost:3030/filter-stores', {
-                countryCode: countryCode
-            })
-
-            const { filteredStores, countryBoundaries } = response.data
+            const { filteredStores, countryBoundaries } = await storeService.filterCountryStoresAndBoundaries(countryCode)
 
             setCountryBoundaries(countryBoundaries)
             setStoresToDisplay(filteredStores)

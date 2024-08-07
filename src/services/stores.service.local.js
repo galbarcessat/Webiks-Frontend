@@ -1,7 +1,33 @@
+import axios from "axios"
 
 export const storeService = {
-    getAllCountries
+    getStores,
+    getAllCountries,
+    filterCountryStoresAndBoundaries
 }
+
+async function getStores() {
+    try {
+        const { data } = await axios.get('http://localhost:3030/stores')
+        return data
+    } catch (error) {
+        throw error
+    }
+}
+
+async function filterCountryStoresAndBoundaries(countryCode) {
+    try {
+        const { data } = await axios.post('http://localhost:3030/filter-stores', {
+            countryCode: countryCode
+        })
+
+        const { filteredStores, countryBoundaries } = data
+        return { filteredStores, countryBoundaries }
+    } catch (error) {
+        throw error
+    }
+}
+
 
 function getAllCountries(stores) {
     const countriesCode = Array.from(new Set(stores.map(store => store.country)))
