@@ -24,7 +24,6 @@ export function HomePage() {
             return
         }
         getCountryStoresAndBoundaries(selectedCountry.code)
-        // fetchCountryBoundaries(selectedCountry.code)
     }, [selectedCountry])
 
     async function getAllStoresLocations() {
@@ -37,7 +36,6 @@ export function HomePage() {
 
             return data
         } catch (error) {
-            console.log('error:', error)
             openAlert({ severity: "error", text: "Failed to fetch Starbucks store locations" })
             throw new Error(error)
         }
@@ -53,16 +51,17 @@ export function HomePage() {
         try {
             const response = await axios.post('http://localhost:3030/filter-stores', {
                 countryCode: countryCode
-            });
+            })
 
             const { filteredStores, countryBoundaries } = response.data
-            console.log('filteredStores:', filteredStores)
-            console.log('boundaries:', countryBoundaries)
 
             setCountryBoundaries(countryBoundaries)
             setStoresToDisplay(filteredStores)
+            openAlert({ severity: "success", text: `Fetched ${selectedCountry.name} store locations successfully` })
+
         } catch (error) {
             console.error('Error filtering stores:', error)
+            openAlert({ severity: "error", text: `Faild to fetche ${selectedCountry.name} store locations` })
         }
     }
 
@@ -92,63 +91,3 @@ export function HomePage() {
         </>
     )
 }
-
-
-
-
-//FILTER LOCATIONS IN THE FRONTEND
-    // function filterLocationsWithinBoundaries(locations, boundaries) {
-    //     if (!locations || locations.length === 0 || !boundaries || !boundaries.type || !boundaries.coordinates) return
-
-    //     const filteredLocations = locations.filter(location => {
-    //         const locationPoint = point([location.longitude, location.latitude])
-    //         return booleanPointInPolygon(locationPoint, boundaries)
-    //     })
-
-    //     console.log('filteredLocations:', filteredLocations)
-    //     openAlert({ severity: "success", text: `Fetched ${selectedCountry.name} store locations successfully` })
-
-    //     setLocationsToDisplay(filteredLocations)
-    // }
-
-    //FETCH COUNTRY BOUNADRIES IN THE FRONTEND
-    // async function fetchCountryBoundaries(countryCode) {
-    //     try {
-    //         const { data } = await axios.get('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
-    //         const countryDetails = data?.features.find(country => country.properties.ISO_A2 === countryCode)
-
-    //         if (!countryDetails) {
-    //             throw new Error("Couldnt find country.")
-    //         }
-
-    //         const boundaries = {
-    //             type: countryDetails.geometry.type,
-    //             coordinates: countryDetails.geometry.coordinates
-    //         }
-
-    //         setCountryBoundaries(boundaries)
-    //         filterLocationsWithinBoundaries(locations, boundaries)
-
-    //     } catch (error) {
-    //         console.error('Error fetching or processing country boundaries:', error);
-    //         openAlert({ severity: "error", text: `Faild to fetch ${selectedCountry.name} store locations` })
-    //         throw new Error(error)
-    //     }
-    // }
-
-
-    //CHECK IF SINGLE LOCATION IS IN A CERTAIN COUNTRY CODE - BACKEND 
-    // async function checkLocation(coordinates, countryCode) {
-    //     try {
-    //         const response = await axios.post('http://localhost:5000/check-location', {
-    //             coordinates: coordinates,
-    //             countryCode: countryCode
-    //         });
-
-    //         const { isInside } = response.data
-    //         return isInside
-    //     } catch (error) {
-    //         console.error('Error checking location:', error)
-    //         return false
-    //     }
-    // }
