@@ -1,4 +1,3 @@
-import { countryCodeToName } from "../assets/data/countryNames.js"
 
 export const storeService = {
     getAllCountries
@@ -16,6 +15,7 @@ function getAllCountries(stores) {
 }
 
 function getCountryName(countryCode) {
-    return countryCodeToName[countryCode] || countryCode
+    const countryName = new Intl.DisplayNames(['en'], { type: 'region' })
+    return countryName.of(countryCode) || countryCode
 }
 
