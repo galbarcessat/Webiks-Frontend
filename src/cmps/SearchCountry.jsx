@@ -9,6 +9,10 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
         setSelectedCountry(selectedCountryObject)
     }
 
+    function areStoresFiltered() {
+        return locationsToDisplay.every(store => store.country === selectedCountry?.code)
+    }
+
     return (
         <div className="search-country-container">
             <Autocomplete
@@ -26,7 +30,7 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
                 <h2>Stores : <span>{locationsToDisplay.length}</span></h2>
             </div>
 
-            {(locationsToDisplay.length > 0 && selectedCountry) &&
+            {(selectedCountry && areStoresFiltered()) &&
                 <StoreList
                     stores={locationsToDisplay}
                 />

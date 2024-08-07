@@ -82,6 +82,7 @@ export function StoresMap({ locationsToDisplay, selectedCountry, countryBoundari
     
   }
 
+  //ADD AFTER COMMENT FOR WHAT THE FUNCTION DOES
   function updateCountryBoundary() {
     //Clear existing boundaries/borders
     boundarySource.clear()
