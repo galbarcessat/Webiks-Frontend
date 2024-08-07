@@ -84,7 +84,6 @@ export function HomePage() {
 
     function filterLocationsByName() {
         const filteredLocations = locations.filter(location => location.country === selectedCountry.code)
-        console.log('filteredLocations:', filteredLocations)
         setLocationsToDisplay(filteredLocations)
     }
 

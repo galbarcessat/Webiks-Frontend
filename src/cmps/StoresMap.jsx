@@ -79,12 +79,7 @@ export function StoresMap({ locationsToDisplay, selectedCountry, countryBoundari
       map.getView().setCenter(fromLonLat([0, 0]))
       map.getView().setZoom(2.5)
     }
-    // else if (locationsToDisplay.length > 0) {
-    //   // if i choose a country it will zoom to its locations - will go to the first one on the list
-    //   const firstLocation = locationsToDisplay[0]
-    //   map.getView().setCenter(fromLonLat([firstLocation.longitude, firstLocation.latitude]))
-    //   map.getView().setZoom(9)
-    // }
+    
   }
 
   function updateCountryBoundary() {
@@ -108,7 +103,7 @@ export function StoresMap({ locationsToDisplay, selectedCountry, countryBoundari
   }
 
   return (
-    <div className='map-container' ref={mapElement} style={{ width: '85vw', height: '100%' }}>
+    <div className='map-container' ref={mapElement} >
 
     </div>
   )

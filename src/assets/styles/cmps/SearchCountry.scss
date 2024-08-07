@@ -1,15 +1,13 @@
-.search-store-container {
+.search-country-container {
     width: 20%;
     min-width: 200px;
     height: 100%;
-    background-color: white;
+    background-color: $primary-background-color;
     padding: 1.5rem;
 
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    // justify-content: space-between;
-    // align-items: center;
 
     .country-details {
         display: flex;

@@ -1,0 +1,22 @@
+@media (max-width: 850px) {
+
+    .search-country-container {
+        height: 20%;
+        min-height: 200px;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: .8rem;
+
+        .css-s0ns04-MuiAutocomplete-root {
+            width: 30%;
+            min-width: 100px;
+        }
+
+        .all-stores-title {
+            padding-block: 1rem;
+        }
+    }
+
+}

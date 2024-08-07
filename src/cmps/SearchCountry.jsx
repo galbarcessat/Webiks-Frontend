@@ -10,7 +10,7 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
     }
 
     return (
-        <div className="search-store-container">
+        <div className="search-country-container">
             <Autocomplete
                 disablePortal
                 id="combo-box-demo"
