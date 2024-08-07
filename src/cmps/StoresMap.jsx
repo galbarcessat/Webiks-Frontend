@@ -11,7 +11,7 @@ import Point from 'ol/geom/Point';
 import 'ol/ol.css';
 import GeoJSON from 'ol/format/GeoJSON';
 
-export function StoresMap({ locationsToDisplay, selectedCountry, countryBoundaries }) {
+export function StoresMap({ storesToDisplay, selectedCountry, countryBoundaries }) {
   const [map, setMap] = useState(null)
   const [vectorSource, setVectorSource] = useState(new VectorSource())
   const [boundarySource, setBoundarySource] = useState(new VectorSource())
@@ -54,20 +54,20 @@ export function StoresMap({ locationsToDisplay, selectedCountry, countryBoundari
       })
       setMap(initialMap)
     } else {
-      updateMapLocations()
-      if (selectedCountry && locationsToDisplay.length > 0) {
+      updateMapStores()
+      if (selectedCountry && storesToDisplay.length > 0) {
         updateCountryBoundary()
       } else {
         boundarySource.clear() // Clear boundaries if no country is selected
       }
     }
-  }, [map, locationsToDisplay])
+  }, [map, storesToDisplay])
 
-  function updateMapLocations() {
-    // Clear existing locations
+  function updateMapStores() {
+    // Clear existing stores
     vectorSource.clear()
-    // Add new store locations
-    locationsToDisplay.forEach((store) => {
+    // Add new store stores
+    storesToDisplay.forEach((store) => {
       const feature = new Feature({
         geometry: new Point(fromLonLat([store.longitude, store.latitude])),
         name: store.name,

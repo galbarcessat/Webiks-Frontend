@@ -7,11 +7,11 @@ import { storeService } from '../services/stores.service.local';
 import { AlertMsg } from '../cmps/AlertMsg';
 
 export function HomePage() {
-    const [locations, setLocations] = useState([])
+    const [stores, setStores] = useState([])
     const [countries, setCountries] = useState([])
     const [selectedCountry, setSelectedCountry] = useState(null)
     const [countryBoundaries, setCountryBoundaries] = useState([])
-    const [locationsToDisplay, setLocationsToDisplay] = useState([])
+    const [storesToDisplay, setStoresToDisplay] = useState([])
     const [alert, setAlert] = useState(null)
 
     useEffect(() => {
@@ -20,18 +20,18 @@ export function HomePage() {
 
     useEffect(() => {
         if (!selectedCountry) {
-            setLocationsToDisplay(locations)
+            setStoresToDisplay(stores)
             return
         }
-        getCountryLocationsAndBoundaries(locations, selectedCountry.code)
+        getCountryStoresAndBoundaries(stores, selectedCountry.code)
         // fetchCountryBoundaries(selectedCountry.code)
     }, [selectedCountry])
 
     async function getAllStoresLocations() {
         try {
             const { data } = await axios.get('https://raw.githubusercontent.com/mmcloughlin/starbucks/master/locations.json')
-            setLocations(data)
-            setLocationsToDisplay(data)
+            setStores(data)
+            setStoresToDisplay(data)
             getAllCountryNames(data)
             openAlert({ severity: "success", text: "Fetched Starbucks store locations successfully" })
 
@@ -43,18 +43,16 @@ export function HomePage() {
         }
     }
 
-    function getAllCountryNames(locations) {
-        const countries = storeService.getAllCountries(locations)
+    function getAllCountryNames(stores) {
+        const countries = storeService.getAllCountries(stores)
         setCountries(countries)
     }
 
-
-
-    //FILTER THE LOCATIONS IN THE BACKEND
-    async function getCountryLocationsAndBoundaries(locations, countryCode) {
+    //FILTER THE STORES IN THE BACKEND
+    async function getCountryStoresAndBoundaries(stores, countryCode) {
         try {
             const response = await axios.post('http://localhost:5000/filter-locations', {
-                locations: locations,
+                locations: stores,
                 countryCode: countryCode
             });
 
@@ -63,7 +61,7 @@ export function HomePage() {
             console.log('boundaries:', countryBoundaries)
 
             setCountryBoundaries(countryBoundaries)
-            setLocationsToDisplay(filteredLocations)
+            setStoresToDisplay(filteredLocations)
         } catch (error) {
             console.error('Error filtering locations:', error)
         }
@@ -76,7 +74,30 @@ export function HomePage() {
         }, 3000)
     }
 
-    //FILTER LOCATIONS IN THE FRONTEND
+    return (
+        <>
+            {alert && <AlertMsg alert={alert} />}
+            <div className="home-page-container">
+                <StoresMap
+                    storesToDisplay={storesToDisplay}
+                    selectedCountry={selectedCountry}
+                    countryBoundaries={countryBoundaries}
+                />
+                <SearchCountry
+                    countries={countries}
+                    setSelectedCountry={setSelectedCountry}
+                    selectedCountry={selectedCountry}
+                    storesToDisplay={storesToDisplay}
+                />
+            </div>
+        </>
+    )
+}
+
+
+
+
+//FILTER LOCATIONS IN THE FRONTEND
     // function filterLocationsWithinBoundaries(locations, boundaries) {
     //     if (!locations || locations.length === 0 || !boundaries || !boundaries.type || !boundaries.coordinates) return
 
@@ -132,23 +153,3 @@ export function HomePage() {
     //         return false
     //     }
     // }
-
-    return (
-        <>
-            {alert && <AlertMsg alert={alert} />}
-            <div className="home-page-container">
-                <StoresMap
-                    locationsToDisplay={locationsToDisplay}
-                    selectedCountry={selectedCountry}
-                    countryBoundaries={countryBoundaries}
-                />
-                <SearchCountry
-                    countries={countries}
-                    setSelectedCountry={setSelectedCountry}
-                    selectedCountry={selectedCountry}
-                    locationsToDisplay={locationsToDisplay}
-                />
-            </div>
-        </>
-    )
-}

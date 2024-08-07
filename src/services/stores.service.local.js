@@ -4,8 +4,8 @@ export const storeService = {
     getAllCountries
 }
 
-function getAllCountries(locations) {
-    const countriesCode = Array.from(new Set(locations.map(location => location.country)))
+function getAllCountries(stores) {
+    const countriesCode = Array.from(new Set(stores.map(store => store.country)))
 
     const countryObjects = countriesCode.map(code => ({
         name: getCountryName(code),

@@ -2,7 +2,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { StoreList } from './StoreList';
 
-export function SearchCountry({ countries, setSelectedCountry, selectedCountry, locationsToDisplay }) {
+export function SearchCountry({ countries, setSelectedCountry, selectedCountry, storesToDisplay }) {
 
     function handleCountryChange(event, countryName) {
         const selectedCountryObject = countries.find(country => country.name === countryName)
@@ -10,7 +10,7 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
     }
 
     function areStoresFiltered() {
-        return locationsToDisplay.every(store => store.country === selectedCountry?.code)
+        return storesToDisplay.every(store => store.country === selectedCountry?.code)
     }
 
     return (
@@ -27,12 +27,12 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
 
             <div className='country-details'>
                 <h1>Country : <span>{selectedCountry ? selectedCountry.name : "Everywhere"}</span></h1>
-                <h2>Stores : <span>{locationsToDisplay.length}</span></h2>
+                <h2>Stores : <span>{storesToDisplay.length}</span></h2>
             </div>
 
             {(selectedCountry && areStoresFiltered()) &&
                 <StoreList
-                    stores={locationsToDisplay}
+                    stores={storesToDisplay}
                 />
             }
 
