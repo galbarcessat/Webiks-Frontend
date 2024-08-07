@@ -1,11 +1,12 @@
 // // RESET
-@import "setup/_reset";
+@import "setup/reset";
 
 // // SETUP
-@import "setup/_variables";
+@import "setup/variables";
+@import "setup/themes";
 
 // // BASICS
-@import "base/_base";
+@import "base/base";
 
 // // COMPONENTS
 @import "cmps/Header";

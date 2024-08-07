@@ -5,7 +5,9 @@
 html {
   font-family: sans-serif;
   line-height: 1.15;
-  color: $primary-text-color;
+  // color: $primary-text-color;
+  color: var(--primary-text-color);
+
 }
 
 body {

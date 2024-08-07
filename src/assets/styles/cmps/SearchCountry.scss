@@ -2,12 +2,47 @@
     width: 20%;
     min-width: 200px;
     height: 100%;
-    background-color: $primary-background-color;
+    background-color: var(--primary-background-color);
     padding: 1.5rem;
 
     display: flex;
     flex-direction: column;
     gap: 2rem;
+
+    .MuiAutocomplete-root {
+        .MuiInputBase-root {
+            color: var(--primary-text-color);
+            border-color: var(--primary-text-color);
+        }
+
+        .MuiOutlinedInput-notchedOutline {
+            border-color: var(--primary-text-color);
+        }
+
+        .MuiInputLabel-root {
+            color: var(--primary-text-color);
+        }
+
+        .MuiAutocomplete-popover {
+            background-color: var(--primary-background-color);
+        }
+
+        .MuiIconButton-root {
+            color: var(--primary-text-color);
+        }
+
+        .MuiAutocomplete-option {
+            color: var(--primary-text-color);
+
+            &:hover {
+                background-color: var(--primary-background-color);
+            }
+
+            &.Mui-focused {
+                background-color: var(--primary-background-color);
+            }
+        }
+    }
 
     .country-details {
         display: flex;

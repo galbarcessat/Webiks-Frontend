@@ -6,7 +6,7 @@
     .all-stores-title {
         text-align: center;
         position: sticky;
-        background-color: $primary-background-color;
+        background-color: var(--primary-background-color);
         top: 0;
         padding-block: 1.5rem;
     }
