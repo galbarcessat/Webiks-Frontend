@@ -23,13 +23,13 @@ export function HomePage() {
             setStoresToDisplay(stores)
             return
         }
-        getCountryStoresAndBoundaries(stores, selectedCountry.code)
+        getCountryStoresAndBoundaries(selectedCountry.code)
         // fetchCountryBoundaries(selectedCountry.code)
     }, [selectedCountry])
 
     async function getAllStoresLocations() {
         try {
-            const { data } = await axios.get('https://raw.githubusercontent.com/mmcloughlin/starbucks/master/locations.json')
+            const { data } = await axios.get('http://localhost:3030/stores')
             setStores(data)
             setStoresToDisplay(data)
             getAllCountryNames(data)
@@ -49,21 +49,20 @@ export function HomePage() {
     }
 
     //FILTER THE STORES IN THE BACKEND
-    async function getCountryStoresAndBoundaries(stores, countryCode) {
+    async function getCountryStoresAndBoundaries(countryCode) {
         try {
-            const response = await axios.post('http://localhost:5000/filter-locations', {
-                locations: stores,
+            const response = await axios.post('http://localhost:3030/filter-stores', {
                 countryCode: countryCode
             });
 
-            const { filteredLocations, countryBoundaries } = response.data
-            console.log('filteredLocations:', filteredLocations)
+            const { filteredStores, countryBoundaries } = response.data
+            console.log('filteredStores:', filteredStores)
             console.log('boundaries:', countryBoundaries)
 
             setCountryBoundaries(countryBoundaries)
-            setStoresToDisplay(filteredLocations)
+            setStoresToDisplay(filteredStores)
         } catch (error) {
-            console.error('Error filtering locations:', error)
+            console.error('Error filtering stores:', error)
         }
     }
 
