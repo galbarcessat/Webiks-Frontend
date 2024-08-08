@@ -13,6 +13,12 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
         return storesToDisplay.every(store => store.country === selectedCountry?.code)
     }
 
+    function sortCountriesByName(countries) {
+        return countries.slice().sort((a, b) => a.name.localeCompare(b.name))
+    }
+
+    const sortedCountries = sortCountriesByName(countries)
+
     return (
         <div className="search-country-container">
             <Autocomplete
@@ -20,7 +26,7 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
                 id="combo-box-demo"
                 value={selectedCountry ? selectedCountry.name : null}
                 onChange={handleCountryChange}
-                options={countries.map(country => country.name)}
+                options={sortedCountries.map(country => country.name)}
                 sx={{ width: "100%" }}
                 renderInput={(params) => <TextField {...params} label="Country" />}
             />
