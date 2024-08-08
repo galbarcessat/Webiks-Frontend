@@ -17,6 +17,7 @@ async function getStores() {
 
 async function filterCountryStoresAndBoundaries(countryCode) {
     try {
+        //using post because i get back a big amount of data - post is better in handling big amount of data than get
         const { data } = await axios.post('http://localhost:3030/filter-stores', {
             countryCode: countryCode
         })

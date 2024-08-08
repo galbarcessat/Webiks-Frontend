@@ -55,7 +55,7 @@ export function StoresMap({ storesToDisplay, selectedCountry, countryBoundaries 
       setMap(initialMap)
     } else {
       updateMapStores()
-      if (selectedCountry && storesToDisplay.length > 0) {
+      if (selectedCountry && storesToDisplay.length > 0 && countryBoundaries) {
         updateCountryBoundary()
       } else {
         boundarySource.clear() // Clear boundaries if no country is selected
@@ -79,27 +79,25 @@ export function StoresMap({ storesToDisplay, selectedCountry, countryBoundaries 
       map.getView().setCenter(fromLonLat([0, 0]))
       map.getView().setZoom(2.5)
     }
-    
+
   }
 
-  //ADD AFTER COMMENT FOR WHAT THE FUNCTION DOES
   function updateCountryBoundary() {
     //Clear existing boundaries/borders
     boundarySource.clear()
 
-    if (selectedCountry && countryBoundaries) {
-      const format = new GeoJSON()
-      const features = format.readFeatures(countryBoundaries, {
-        featureProjection: 'EPSG:3857',
-      })
+    //The readFeatures method converts the countryBoundaries GeoJSON data into OpenLayers features.
+    const format = new GeoJSON()
+    const features = format.readFeatures(countryBoundaries, {
+      featureProjection: 'EPSG:3857',
+    })
 
-      boundarySource.addFeatures(features)
+    boundarySource.addFeatures(features)
 
-      // Adjust the view to fit the country boundary
-      if (features.length > 0) {
-        const extent = features[0].getGeometry().getExtent()
-        map.getView().fit(extent, { padding: [50, 50, 50, 50] })
-      }
+    // Adjust the view to fit the country boundary
+    if (features.length > 0) {
+      const extent = features[0].getGeometry().getExtent()
+      map.getView().fit(extent, { padding: [50, 50, 50, 50] })
     }
   }
 
