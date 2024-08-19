@@ -13,6 +13,7 @@ export function SearchCountry({ countries, setSelectedCountry, selectedCountry, 
         return storesToDisplay.every(store => store.country === selectedCountry?.code)
     }
 
+    //can add a by prop and then filter by city/name and remove the sorting function in StoreList
     function sortCountriesByName(countries) {
         return countries.slice().sort((a, b) => a.name.localeCompare(b.name))
     }

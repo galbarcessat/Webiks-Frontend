@@ -1,4 +1,6 @@
-import axios from "axios"
+import { httpService } from "./http.service.js"
+
+const BASE_URL = 'store'
 
 export const storeService = {
     getStores,
@@ -8,8 +10,8 @@ export const storeService = {
 
 async function getStores() {
     try {
-        const { data } = await axios.get('http://localhost:3030/stores')
-        return data
+        const res = await httpService.get(BASE_URL, null)
+        return res
     } catch (error) {
         throw error
     }
@@ -18,11 +20,8 @@ async function getStores() {
 async function filterCountryStoresAndBoundaries(countryCode) {
     try {
         //using post because i get back a big amount of data - post is better in handling big amount of data than get
-        const { data } = await axios.post('http://localhost:3030/filter-stores', {
-            countryCode: countryCode
-        })
-
-        const { filteredStores, countryBoundaries } = data
+        const res = await httpService.post(`${BASE_URL}/filter-stores`, { countryCode })
+        const { filteredStores, countryBoundaries } = res
         return { filteredStores, countryBoundaries }
     } catch (error) {
         throw error
